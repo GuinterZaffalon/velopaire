@@ -25,7 +25,6 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-
 class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? _mapController;
   LatLng? _userLocation;
@@ -113,10 +112,19 @@ class _HomeScreenState extends State<HomeScreen> {
                       onMapCreated: (controller) => _mapController = controller,
                     ),
             ),
+            Column(
+              children: [
+                SizedBox(
+                  
+                  child: Container(
+                    color: Colors.white,
+                      ),
+                )
+              ],
+            )
           ],
         ),
       ),
     );
   }
 }
-
