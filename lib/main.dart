@@ -25,9 +25,11 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+
 class _HomeScreenState extends State<HomeScreen> {
   GoogleMapController? _mapController;
   LatLng? _userLocation;
+  Stream<Position>? _positionStream;
 
   @override
   void initState() {
@@ -39,11 +41,30 @@ class _HomeScreenState extends State<HomeScreen> {
     await Permission.location.request();
 
     if (await Permission.location.isGranted) {
+      // Pega a localização inicial
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
       setState(() {
         _userLocation = LatLng(position.latitude, position.longitude);
+      });
+
+      // Escuta as mudanças de localização
+      _positionStream = Geolocator.getPositionStream(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 5, // Atualiza a cada 5 metros
+        ),
+      );
+      _positionStream!.listen((Position pos) {
+        final newLocation = LatLng(pos.latitude, pos.longitude);
+        setState(() {
+          _userLocation = newLocation;
+        });
+        // Move a câmera do mapa para a nova posição
+        _mapController?.animateCamera(
+          CameraUpdate.newLatLng(newLocation),
+        );
       });
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -79,13 +100,13 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           children: [
             SizedBox(
-              width: 450,
+              width: 420,
               child: _userLocation == null
                   ? const Center(child: CircularProgressIndicator())
                   : GoogleMap(
                       initialCameraPosition: CameraPosition(
                         target: _userLocation!,
-                        zoom: 16,
+                        zoom: 18,
                       ),
                       myLocationEnabled: true,
                       myLocationButtonEnabled: true,
@@ -98,3 +119,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
