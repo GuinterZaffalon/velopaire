@@ -115,7 +115,11 @@ class _HomeScreenState extends State<HomeScreen> {
             Column(
               children: [
                 SizedBox(
-                  
+                  child: Container(
+                    color: Colors.white,
+                      ),
+                ),
+                SizedBox(
                   child: Container(
                     color: Colors.white,
                       ),
