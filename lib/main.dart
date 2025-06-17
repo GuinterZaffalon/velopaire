@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:velopaire/components/SpotifyNowPlaying.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -115,9 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Column(
               children: [
                 SizedBox(
-                  child: Container(
-                    color: Colors.white,
-                      ),
+                  child: SpotifyNowPlayingScreen()
                 ),
                 SizedBox(
                   child: Container(
