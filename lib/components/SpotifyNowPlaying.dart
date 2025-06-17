@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:spotify_sdk/spotify_sdk.dart';
 import 'package:spotify_sdk/models/player_state.dart';
 
-
 class SpotifyNowPlayingScreen extends StatefulWidget {
   const SpotifyNowPlayingScreen({super.key});
 
   @override
-  State<SpotifyNowPlayingScreen> createState() => _SpotifyNowPlayingScreenState();
+  State<SpotifyNowPlayingScreen> createState() =>
+      _SpotifyNowPlayingScreenState();
 }
 
 class _SpotifyNowPlayingScreenState extends State<SpotifyNowPlayingScreen> {
@@ -15,24 +15,25 @@ class _SpotifyNowPlayingScreenState extends State<SpotifyNowPlayingScreen> {
 
 Future<void> _connectToSpotify() async {
   try {
-    // Solicite o token com os scopes necessários
-      await SpotifySdk.getAccessToken(
+    // 1. Solicite o token com os scopes necessários
+    await SpotifySdk.getAccessToken(
       clientId: '3da8f5d70dd843e193694a1beb837b5e',
       redirectUrl: 'myapp://callback',
       scope: 'app-remote-control,user-read-playback-state,user-modify-playback-state,user-read-currently-playing',
     );
-    // Só depois tente conectar
+
+    // 2. Só depois tente conectar
     bool result = await SpotifySdk.connectToSpotifyRemote(
       clientId: '3da8f5d70dd843e193694a1beb837b5e',
       redirectUrl: 'myapp://callback',
     );
+
     setState(() {
       _connected = result;
     });
-  } catch (e) {
-    setState(() {
-      _connected = false;
-    });
+  } catch (e, stack) {
+    debugPrint('Erro ao conectar ao Spotify: $e');
+    debugPrintStack(stackTrace: stack);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Erro ao conectar: $e')),
     );
@@ -54,7 +55,8 @@ Future<void> _connectToSpotify() async {
               stream: SpotifySdk.subscribePlayerState(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData || snapshot.data?.track == null) {
-                  return const Center(child: Text('Nada está tocando no momento.'));
+                  return const Center(
+                      child: Text('Nada está tocando no momento.'));
                 }
                 final track = snapshot.data!.track!;
                 return Padding(
@@ -72,7 +74,8 @@ Future<void> _connectToSpotify() async {
                       const SizedBox(height: 24),
                       Text(
                         track.name,
-                        style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
@@ -84,7 +87,8 @@ Future<void> _connectToSpotify() async {
                       const SizedBox(height: 8),
                       Text(
                         track.album.name!,
-                        style: const TextStyle(fontSize: 16, color: Colors.grey),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.grey),
                         textAlign: TextAlign.center,
                       ),
                     ],
