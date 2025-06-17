@@ -78,7 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: Row(
           children: [
-            Expanded(
+            SizedBox(
+              width: 450,
               child: _userLocation == null
                   ? const Center(child: CircularProgressIndicator())
                   : GoogleMap(
@@ -89,13 +90,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       myLocationEnabled: true,
                       myLocationButtonEnabled: true,
                       onMapCreated: (controller) => _mapController = controller,
-                      markers: {
-                        Marker(
-                          markerId: const MarkerId('user_location'),
-                          position: _userLocation!,
-                          infoWindow: const InfoWindow(title: 'Você está aqui'),
-                        ),
-                      },
                     ),
             ),
           ],
