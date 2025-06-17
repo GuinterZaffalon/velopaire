@@ -25,9 +25,25 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext build) {
     return Container(
-      color: Colors.white,
-      height: double.infinity,
-      width: double.infinity,
-    );
+                          decoration: BoxDecoration(
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withValues(alpha: 0.3),
+                                spreadRadius: 2,
+                                blurRadius: 7,
+                                offset:
+                                    Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                            gradient: LinearGradient(
+                              begin: Alignment.centerRight,
+                              end: Alignment.bottomLeft,
+                              colors: [
+                                Color.fromRGBO(255, 72, 0, 1),
+                                Color.fromRGBO(42, 42, 89, 1),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ));
   }
 }
