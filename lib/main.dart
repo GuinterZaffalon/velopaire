@@ -116,13 +116,10 @@ class _HomeScreenState extends State<HomeScreen> {
             Column(
               children: [
                 SizedBox(
+                  width: 360,
+                  height: 140,
                   child: SpotifyNowPlayingScreen()
                 ),
-                SizedBox(
-                  child: Container(
-                    color: Colors.white,
-                      ),
-                )
               ],
             )
           ],
