@@ -57,6 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
       );
       _positionStream!.listen((Position pos) {
         final newLocation = LatLng(pos.latitude, pos.longitude);
+        print(pos.latitude);
+        print(pos.longitude);
         setState(() {
           _userLocation = newLocation;
         });

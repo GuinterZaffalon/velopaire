@@ -62,23 +62,23 @@ class _WeatherComponentState extends State<WeatherComponent> {
 
   Widget _buildWeatherInfo(String emoji, String value, String label) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             emoji,
-            style: const TextStyle(fontSize: 24),
+            style: const TextStyle(fontSize: 20),
           ),
-          const SizedBox(height: 4),
           Text(
             value,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -86,7 +86,7 @@ class _WeatherComponentState extends State<WeatherComponent> {
             label,
             style: TextStyle(
               color: Colors.white.withOpacity(0.8),
-              fontSize: 14,
+              fontSize: 12,
             ),
           ),
         ],
@@ -107,7 +107,7 @@ class _WeatherComponentState extends State<WeatherComponent> {
     }
 
     return Container(
-      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+      margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -131,68 +131,70 @@ class _WeatherComponentState extends State<WeatherComponent> {
         child: Stack(
           children: [
             Positioned(
-              right: -20,
-              top: -20,
+              right: -10,
+              top: -10,
               child: Text(
                 _getWeatherIcon(_weather!.weatherDescription),
-                style: const TextStyle(fontSize: 100),
+                style: const TextStyle(fontSize: 80),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    _weather!.areaName ?? 'Local desconhecido',
-                    style: const TextStyle(
+                    _weather!.weatherDescription?.toUpperCase() ?? '',
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 10,
+                          color: Colors.black.withOpacity(0.3),
+                          offset: const Offset(2, 2),
+                        ),
+                      ],
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _weather!.weatherDescription ?? '',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
-                      fontSize: 16,
-                    ),
-                  ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 16),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _buildWeatherInfo(
                         '🌡️',
                         '${_weather!.temperature?.celsius?.toStringAsFixed(1)}°C',
-                        'Temperatura',
+                        'Temp',
                       ),
                       _buildWeatherInfo(
                         '💧',
                         '${_weather!.humidity?.toStringAsFixed(0)}%',
-                        'Umidade',
+                        'Umid',
                       ),
                       _buildWeatherInfo(
                         '💨',
-                        '${_weather!.windSpeed?.toStringAsFixed(1)} km/h',
+                        '${_weather!.windSpeed?.toStringAsFixed(1)}km/h',
                         'Vento',
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                  Center(
-                    child: TextButton.icon(
-                      onPressed: _fetchWeather,
-                      icon: const Icon(Icons.refresh, color: Colors.white),
-                      label: const Text(
-                        'Atualizar',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                  ),
                 ],
+              ),
+            ),
+            Positioned(
+              right: 8,
+              bottom: 8,
+              child: IconButton(
+                onPressed: _fetchWeather,
+                icon: const Icon(Icons.refresh, color: Colors.white, size: 20),
+                tooltip: 'Atualizar',
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
               ),
             ),
           ],
