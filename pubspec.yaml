@@ -39,6 +39,7 @@ dependencies:
   geolocator: ^11.0.0
   permission_handler: ^11.3.0
   spotify_sdk: ^3.0.2
+  weather: ^3.2.1
 
 dev_dependencies:
   flutter_test:

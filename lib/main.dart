@@ -4,6 +4,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:velopaire/components/SpotifyNowPlaying.dart';
+import 'package:velopaire/components/wheaterCoponent.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
     await Permission.location.request();
 
     if (await Permission.location.isGranted) {
-      // Pega a localização inicial
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
       );
@@ -49,11 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
         _userLocation = LatLng(position.latitude, position.longitude);
       });
 
-      // Escuta as mudanças de localização
       _positionStream = Geolocator.getPositionStream(
         locationSettings: const LocationSettings(
           accuracy: LocationAccuracy.high,
-          distanceFilter: 5, // Atualiza a cada 5 metros
+          distanceFilter: 5,
         ),
       );
       _positionStream!.listen((Position pos) {
@@ -61,7 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           _userLocation = newLocation;
         });
-        // Move a câmera do mapa para a nova posição
         _mapController?.animateCamera(
           CameraUpdate.newLatLng(newLocation),
         );
@@ -120,6 +118,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 140,
                   child: SpotifyNowPlayingScreen()
                 ),
+                SizedBox(
+                  width: 360,
+                  height: 200,
+                  child: WeatherComponent(lat: _userLocation!.latitude, long: _userLocation!.longitude)
+                )
               ],
             )
           ],
