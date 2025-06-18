@@ -99,19 +99,22 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         child: Row(
           children: [
-            SizedBox(
-              width: 420,
-              child: _userLocation == null
-                  ? const Center(child: CircularProgressIndicator())
-                  : GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: _userLocation!,
-                        zoom: 18,
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: SizedBox(
+                width: 420,
+                child: _userLocation == null
+                    ? const Center(child: CircularProgressIndicator())
+                    : GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target: _userLocation!,
+                          zoom: 18,
+                        ),
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: true,
+                        onMapCreated: (controller) => _mapController = controller,
                       ),
-                      myLocationEnabled: true,
-                      myLocationButtonEnabled: true,
-                      onMapCreated: (controller) => _mapController = controller,
-                    ),
+              ),
             ),
             Column(
               children: [
